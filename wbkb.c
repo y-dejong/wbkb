@@ -199,7 +199,6 @@ printf("Ready to connect to Wii Balance Board\n");
 
 				case WIIUSE_WII_BOARD_CTRL_REMOVED:
 					/* some expansion was removed */
-					handle_ctrl_status(wiimotes[i]);
 					printf("An expansion was removed.\n");
 					break;
 					
