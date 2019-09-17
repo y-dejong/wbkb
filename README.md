@@ -42,6 +42,6 @@ To pair the board, start by locating the "Reset" button on the bottom of the Wii
 
 ### Playing
 
-Once you are given the `Ready to connect` prompt, the balance board will begin to send keypresses based on what direction you are leaning. Note that the board will not send keypresses unless there are 25 kg on the board, and there is a threshold that you must lean past in order to send a keypress (Both of these values will be configurable in future versions).
+Once you are given the `Ready to Interact` prompt, the balance board will begin to send keypresses based on what direction you are leaning. Note that the board will not send keypresses unless there are 25 kg on the board, and there is a threshold that you must lean past in order to send a keypress (Both of these values will be configurable in future versions).
 
 You can quit the program with `Ctrl-C`.
