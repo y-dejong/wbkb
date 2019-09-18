@@ -4,7 +4,14 @@ project(wbkb)
 add_subdirectory("wiiuse")
 
 find_path(XDO_INCLUDE_DIRS xdo.h)
-find_library(XDO_LIBRARIES libxdo)
+if(XDO_INCLUDE_DIRS STREQUAL XDO_INCLUDE_DIRS-NOTFOUND)
+  message(FATAL_ERROR "xdo libraries header files not found")
+endif()
+
+find_library(XDO_LIBRARIES xdo)
+if(XDO_LIBRARIES STREQUAL XDO_LIBRARIES-NOTFOUND)
+  message(FATAL_ERROR "xdo libraries not found")
+endif()
 
 add_executable(wbkb wbkb.c)
 
