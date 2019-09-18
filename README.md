@@ -34,6 +34,7 @@ The wbkb program should be run in a shell.
 ### Keybindings
 
 Running the `wbkb` program on its own will, by default, bind each direction on the balance board to its corresponding arrow key. You can change which keys are bound by passing them in as command line arguments, in the form:
+	
 	./wbkb LEFT_KEY RIGHT_KEY UP_KEY DOWN_KEY
 
 ### Pairing
