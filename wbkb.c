@@ -118,6 +118,19 @@ short any_wiimote_connected(wiimote** wm, int wiimotes) {
 	return 0;
 }
 
+void help() {
+	printf("USAGE: wiikey [--help] [LEFT_KEY RIGHT_KEY UP_KEY DOWN_KEY]\n");
+	printf("Map directional movement on the Wii Balance Board to keyboard presses\n");
+	printf("\nOPTIONS:\n");
+	printf("\t-h, --help\tDisplay this text and exit\n");
+	printf("\t[DIRECTION]_KEY\tThe button to be held when leaning in DIRECTION\n");
+	printf("\nPairing Instructions:\n");
+	printf("\tLocate the \"Reset\" button on the bottom of the Wii Balance Board.\n");
+	printf("\tThis may be located inside the battery compartment. Turn on\n");
+	printf("\tBluetooth on your device. Run the program, and press the Reset\n");
+	printf("\tbutton when given the \"Ready to connect\" message.\n");
+}
+
 void quit(int i) {
 	running = false;
 	printf("Quitting!\n");
@@ -125,27 +138,19 @@ void quit(int i) {
 
 int main(int argc, char** argv) {
 
-	if(argc == 1) LEFT_KEY = "Left", RIGHT_KEY = "Right", UP_KEY = "Up", DOWN_KEY = "Down";
-	else if(argc > 1) {
-		if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
-			printf("USAGE: wiikey [--help] [LEFT_KEY RIGHT_KEY UP_KEY DOWN_KEY]\n");
-			printf("Map directional movement on the Wii Balance Board to keyboard presses\n");
-			printf("\nOPTIONS:\n");
-			printf("\t-h, --help\tDisplay this text and exit\n");
-			printf("\t[DIRECTION]_KEY\tThe button to be held when leaning in DIRECTION\n");
-			printf("\nPairing Instructions:\n");
-			printf("\tLocate the \"Reset\" button on the bottom of the Wii Balance Board.\n");
-			printf("\tThis may be located inside the battery compartment. Turn on\n");
-			printf("\tBluetooth on your device. Run the program, and press the Reset\n");
-			printf("\tbutton when given the \"Ready to connect\" message.\n");
-			return 0;
+    LEFT_KEY = "Left", RIGHT_KEY = "Right", UP_KEY = "Up", DOWN_KEY = "Down";
+	if(argc > 1) {
+		for(int i = 1; i < argc; ++i) {
+			if(strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+				help();
+				return 0;
+			}
 		}
 		if(argc >= 5) LEFT_KEY = argv[1], RIGHT_KEY = argv[2], UP_KEY = argv[3], DOWN_KEY = argv[4];
 	}
 
 	printf("LEFT is %s, RIGHT is %s, UP is %s, DOWN is %s\n", LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY);
 	signal(SIGINT, quit);
-	xdo = xdo_new(":0.0");
 	
 	wiimote** wiimotes = wiiuse_init(MAX_WIIMOTES);
 	int found, connected;
@@ -176,6 +181,8 @@ printf("Ready to connect to Wii Balance Board\n");
 	}
 	usleep(200000);
 
+	xdo = xdo_new(":0.0");
+	
 	printf("\nConnected, ready to interact!\n");
 	while (running && any_wiimote_connected(wiimotes, MAX_WIIMOTES)) {
 		if (wiiuse_poll(wiimotes, MAX_WIIMOTES)) {
@@ -213,6 +220,7 @@ printf("Ready to connect to Wii Balance Board\n");
 	 *	Disconnect the wiimotes
 	 */
 	wiiuse_cleanup(wiimotes, MAX_WIIMOTES);
+	xdo_free(xdo);
 	printf("End of main\n");
 
 	return 0;
